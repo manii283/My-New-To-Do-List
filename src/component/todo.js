@@ -1,9 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../App.css";
 
+// to get the data from local storage
+const getLocalItems = () => {
+  let list = localStorage.getItem('lists');
+  console.log(list);
+  if (list) {
+      return JSON.parse(localStorage.getItem('lists'));
+  } else {
+      return [];
+  }
+}
+
 const Todo = () => {
+
   const [inputData, setInputData] = useState("");
-  const [items, setItems] = useState([]);
+  const [items, setItems] = useState(getLocalItems);
 
   //for btm toggle
   const [toggleSubmit, setToggleSubmit] = useState(true);
@@ -59,6 +71,10 @@ const Todo = () => {
      setInputData(newEditItem.name);
      setIsEditItems(id);
   }
+
+  useEffect(() => {
+    localStorage.setItem('lists',JSON.stringify(items));
+  }, [items])
 
   return (
     <>
